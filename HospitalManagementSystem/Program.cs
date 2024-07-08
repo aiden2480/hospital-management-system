@@ -8,10 +8,10 @@ internal class Program
     {
         using var db = new HospitalDbContext();
 
-        var patient = db.Patients.SingleOrDefault(e => e.FirstName == "Patricia");
-        var doctor = db.Doctors.SingleOrDefault(e => e.FirstName == "Brandon");
-        var admin = db.Administrators.SingleOrDefault(e => e.Id == 30001);
-        var appt = db.Appointments.SingleOrDefault(e => e.Description == "sample");
+        var patient = db.Patients.FirstOrDefault(e => e.FirstName == "Patricia");
+        var doctor = db.Doctors.FirstOrDefault(e => e.FirstName == "Brandon");
+        var admin = db.Administrators.FirstOrDefault(e => e.Id == 30001);
+        var appt = db.Appointments.FirstOrDefault(e => e.Description == "sample");
 
         patient ??= db.Patients.Add(new Patient
         {
@@ -45,17 +45,15 @@ internal class Program
         }).Entity;
 
         db.SaveChanges();
-        db.Dispose();
-        Environment.Exit(0);
 
         appt ??= db.Appointments.Add(new Appointment
         {
             DoctorId = doctor.Id,
             PatientId = patient.Id,
-            Description = "sample test appointment",
+            Description = "sample",
+            ScheduledTime = DateTime.Now,
         }).Entity;
 
         db.SaveChanges();
-        Console.ReadLine();
     }
 }

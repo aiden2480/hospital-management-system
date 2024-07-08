@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using static System.Environment;
 
 namespace HospitalManagementSystem.Entity;
 
@@ -21,30 +20,39 @@ public class HospitalDbContext : DbContext
     public HospitalDbContext()
         => Database.EnsureCreated();
 
-    protected virtual string DatabasePath
-        => Path.Join(GetFolderPath(SpecialFolder.LocalApplicationData), "AidenGardnerHMS", "hmsdatabase.db");
-
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-    {
-        var directory = new FileInfo(DatabasePath).Directory!.FullName;
-        Directory.CreateDirectory(directory);
-
-        options.UseSqlite($"Data Source={DatabasePath}");
-    }
+        => options.UseSqlServer($"Server={Environment.MachineName};Database=HospitalManagementSystem;Trusted_Connection=True;Encrypt=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.Entity<EntityName>(b =>
-        //{
-        //    b.ToTable("TabelName");
-        //    b.Property(x => x.ColumnName).ValueGeneratedOnAdd().UseIdentityColumn(1000, 1);
-        //});
+        // Set the auto increment for these fields to start at certain values
+        modelBuilder
+            .Entity<Doctor>()
+            .Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .UseIdentityColumn(10001, 1);
 
-        //modelBuilder
-        //    .Entity<Patient>()
-        //    .Property(a => a.Id)
-        //    .HasComputedColumnSql("Id + 10000");
+        modelBuilder
+            .Entity<Patient>()
+            .Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .UseIdentityColumn(20001, 1);
 
-        modelBuilder.Entity<Administrator>().HasData(new Administrator { Id = 30001, Password = "p@assw0rd" });
+        modelBuilder
+            .Entity<Administrator>()
+            .Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .UseIdentityColumn(30001, 1);
+
+        modelBuilder
+            .Entity<Appointment>()
+            .Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .UseIdentityColumn(40001, 1);
+
+        // We should always have a default admin login
+        modelBuilder
+            .Entity<Administrator>()
+            .HasData(new Administrator { Id = 30001, Password = "p@assw0rd" });
     }
 }
