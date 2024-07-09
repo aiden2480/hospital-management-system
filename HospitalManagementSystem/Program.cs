@@ -1,4 +1,7 @@
 ﻿using HospitalManagementSystem.Entity;
+using HospitalManagementSystem.Interfaces;
+using HospitalManagementSystem.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HospitalManagementSystem;
 
@@ -6,54 +9,49 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        using var db = new HospitalDbContext();
+        var services = GetServices();
+        var loginService = services.GetRequiredService<ILoginService>();
 
-        var patient = db.Patients.FirstOrDefault(e => e.FirstName == "Patricia");
-        var doctor = db.Doctors.FirstOrDefault(e => e.FirstName == "Brandon");
-        var admin = db.Administrators.FirstOrDefault(e => e.Id == 30001);
-        var appt = db.Appointments.FirstOrDefault(e => e.Description == "sample");
+        LoginCapableUser? loggedInUser = null;
 
-        patient ??= db.Patients.Add(new Patient
+        while (loggedInUser == null)
         {
-            FirstName = "Patricia",
-            LastName = "Blanc",
-            Email = "patblanc@gmail.com",
-            PhoneNumber = "1234567890",
-            AddrStreetNumber = "8",
-            AddrStreet = "Blake Street",
-            AddrCity = "Sydney",
-            AddrState = "NSW",
-            Password = "password",
-        }).Entity;
+            Console.Clear();
 
-        doctor ??= db.Doctors.Add(new Doctor
+            Console.Write("User ID: ");
+            var userId = ConsoleService.ReadInteger();
+
+            Console.Write("Password: ");
+            var password = ConsoleService.ReadPassword();
+
+            loggedInUser = loginService.AttemptLogin(userId, password);
+        }
+
+        InvokeMainMenu(services, loggedInUser);
+    }
+
+    private static ServiceProvider GetServices()
+        => new ServiceCollection()
+            .AddDbContext<HospitalDbContext>()
+            .AddSingleton<ILoginService, LoginService>()
+            .AddSingleton<IDoctorMenuService, DoctorMenuService>()
+            .AddSingleton<IPatientMenuService, PatientMenuService>()
+            .AddSingleton<IAdminMenuService, AdminMenuService>()
+            .BuildServiceProvider();
+
+    private static void InvokeMainMenu(IServiceProvider services, LoginCapableUser loggedInUser)
+    {
+        if (loggedInUser is Doctor doctor)
         {
-            FirstName = "Brandon",
-            LastName = "Blake",
-            Email = "bblake@hospital.com",
-            PhoneNumber = "1234567890",
-            AddrStreetNumber = "1",
-            AddrStreet = "Viola Lane",
-            AddrCity = "Brisbane",
-            AddrState = "VIC",
-            Password = "password",
-        }).Entity;
-
-        admin ??= db.Administrators.Add(new Administrator
+            services.GetRequiredService<IDoctorMenuService>().MainMenu(doctor);
+        }
+        if (loggedInUser is Patient patient)
         {
-            Password = "test password",
-        }).Entity;
-
-        db.SaveChanges();
-
-        appt ??= db.Appointments.Add(new Appointment
+            services.GetRequiredService<IPatientMenuService>().MainMenu(patient);
+        }
+        if (loggedInUser is Administrator admin)
         {
-            DoctorId = doctor.Id,
-            PatientId = patient.Id,
-            Description = "sample",
-            ScheduledTime = DateTime.Now,
-        }).Entity;
-
-        db.SaveChanges();
+            services.GetRequiredService<IAdminMenuService>().MainMenu(admin);
+        }
     }
 }
