@@ -1,4 +1,6 @@
-﻿namespace HospitalManagementSystem.Entity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace HospitalManagementSystem.Entity;
 
 /// <summary>
 /// Any user which can login to the system. This includes patients, doctors, and administrators.
@@ -31,4 +33,10 @@ public abstract class LoginCapableUserWithDetails : LoginCapableUser
     public required string AddrCity { get; init; }
 
     public required string AddrState { get; init; }
+
+    [NotMapped]
+    public string FullName => $"{FirstName} {LastName}";
+
+    [NotMapped]
+    public string FullAddr => $"{AddrStreetNumber} {AddrStreet}, {AddrCity}, {AddrState}";
 }

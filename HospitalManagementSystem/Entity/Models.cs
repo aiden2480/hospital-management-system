@@ -27,15 +27,15 @@ public class Administrator : LoginCapableUser { }
 /// </summary>
 public class Appointment
 {
-    public int Id { get; }
+    public int Id { get; set; }
 
     public int DoctorId { get; init; }
 
-    public Doctor Doctor { get; } = null!;
+    public Doctor Doctor { get; set; } = null!;
 
     public int PatientId { get; init; }
 
-    public Patient Patient { get; } = null!;
+    public Patient Patient { get; set; } = null!;
 
     public required string Description { get; init; }
 
