@@ -20,11 +20,7 @@ public class Patient : LoginCapableUserWithDetails
 /// An administrator of the system, capable of performing any action on behalf
 /// of doctors or patients
 /// </summary>
-public class Administrator : LoginCapableUser
-{
-    // Admin must have Id init for DB seeding
-    new public int Id { get; init; }
-}
+public class Administrator : LoginCapableUser { }
 
 /// <summary>
 /// An appointment between a patient and a doctor.

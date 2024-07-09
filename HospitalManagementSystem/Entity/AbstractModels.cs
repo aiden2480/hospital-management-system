@@ -5,7 +5,7 @@
 /// </summary>
 public abstract class LoginCapableUser
 {
-    public int Id { get; }
+    public int Id { get; set; }
 
     public required string Password { get; init; }
 }
