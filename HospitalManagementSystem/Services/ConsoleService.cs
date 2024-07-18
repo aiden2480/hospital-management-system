@@ -1,19 +1,23 @@
-﻿using static System.ConsoleKey;
+﻿using Spectre.Console;
+using static System.ConsoleKey;
 
 namespace HospitalManagementSystem.Services;
 
 public static class ConsoleService
 {
-    public static string ReadPassword()
-        => ReadConsole(maskInput: true, allowEmpty: false);
+    public static string ReadPassword(string prompt)
+        => AnsiConsole.Prompt(
+            new TextPrompt<string>(prompt)
+                .PromptStyle("grey50")
+                .Secret());
 
     public static int ReadInteger()
     {
-        var input = ReadConsole((k, s) => char.IsDigit(k.KeyChar), maskInput: false, allowEmpty: false);
+        var input = ReadConsole((k, s) => char.IsDigit(k.KeyChar), allowEmpty: false);
         return int.Parse(input);
     }
 
-    private static string ReadConsole(Func<ConsoleKeyInfo, string, bool> allowKey, bool maskInput, bool allowEmpty)
+    private static string ReadConsole(Func<ConsoleKeyInfo, string, bool> allowKey, bool allowEmpty)
     {
         ConsoleKeyInfo keyInfo;
         var input = string.Empty;
@@ -54,11 +58,8 @@ public static class ConsoleService
             }
 
             // Print asterisks if we should mask the key input
-            Console.Write(maskInput ? "*" : keyInfo.KeyChar);
+            Console.Write(keyInfo.KeyChar);
             input += keyInfo.KeyChar;
         }
     }
-
-    private static string ReadConsole(bool maskInput, bool allowEmpty)
-        => ReadConsole((_, _) => true, maskInput, allowEmpty);
 }

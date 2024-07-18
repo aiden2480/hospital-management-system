@@ -2,32 +2,23 @@
 using HospitalManagementSystem.Interfaces;
 using HospitalManagementSystem.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Spectre.Console;
 
 namespace HospitalManagementSystem;
 
 internal class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
         var services = GetServices();
-        var loginService = services.GetRequiredService<ILoginService>();
 
-        LoginCapableUser? loggedInUser = null;
-
-        while (loggedInUser == null)
+        // This can be wrapped in a while true method because
+        // the main menu should call Environment.Exit if needed
+        while (true)
         {
-            Console.Clear();
-
-            Console.Write("User ID: ");
-            var userId = ConsoleService.ReadInteger();
-
-            Console.Write("Password: ");
-            var password = ConsoleService.ReadPassword();
-
-            loggedInUser = loginService.AttemptLogin(userId, password);
+            InvokeLoginMenu(services, out var loggedInUser);
+            InvokeMainMenu(services, loggedInUser);
         }
-
-        InvokeMainMenu(services, loggedInUser);
     }
 
     private static ServiceProvider GetServices()
@@ -38,6 +29,30 @@ internal class Program
             .AddSingleton<IPatientMenuService, PatientMenuService>()
             .AddSingleton<IAdminMenuService, AdminMenuService>()
             .BuildServiceProvider();
+
+    private static void InvokeLoginMenu(IServiceProvider services, out LoginCapableUser loggedInUser)
+    {
+        var loginService = services.GetRequiredService<ILoginService>();
+        LoginCapableUser? attemptedLogin = null;
+        var loginFailed = false;
+
+        while (attemptedLogin == null)
+        {
+            AnsiConsole.Clear();
+            AnsiConsole.WriteLine("Welcome to Hospital Management System");
+            AnsiConsole.WriteLine("Please enter your credentials to login.");
+            AnsiConsole.MarkupLine(loginFailed ? "[maroon]Login failed[/]\n" : "\n");
+            AnsiConsole.Write("User ID: ");
+
+            var userId = ConsoleService.ReadInteger();
+            var password = ConsoleService.ReadPassword("Password: ");
+
+            attemptedLogin = loginService.AttemptLogin(userId, password);
+            loginFailed = true;
+        }
+
+        loggedInUser = attemptedLogin;
+    }
 
     private static void InvokeMainMenu(IServiceProvider services, LoginCapableUser loggedInUser)
     {
