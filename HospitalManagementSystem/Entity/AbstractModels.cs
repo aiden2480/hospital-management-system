@@ -34,6 +34,8 @@ public abstract class LoginCapableUserWithDetails : LoginCapableUser
 
     public required string AddrState { get; init; }
 
+    public ICollection<Appointment> Appointments { get; } = [];
+
     [NotMapped]
     public string FullName => $"{FirstName} {LastName}";
 

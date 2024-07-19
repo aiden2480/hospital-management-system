@@ -3,17 +3,16 @@
 /// <summary>
 /// A doctor with scheduled appointments, capable of logging into the system.
 /// </summary>
-public class Doctor : LoginCapableUserWithDetails
-{
-    public ICollection<Appointment> Appointments { get; } = [];
-}
+public class Doctor : LoginCapableUserWithDetails { }
 
 /// <summary>
 /// A patient with scheduled appointments, capable of logging into the system.
 /// </summary>
 public class Patient : LoginCapableUserWithDetails
 {
-    public ICollection<Appointment> Appointments { get; } = [];
+    public int? DoctorId { get; set; }
+
+    public Doctor? Doctor { get; set; } = null;
 }
 
 /// <summary>
