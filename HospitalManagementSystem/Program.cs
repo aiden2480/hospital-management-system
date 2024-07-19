@@ -32,8 +32,8 @@ internal class Program
 
     private static void InvokeLoginMenu(IServiceProvider services, out LoginCapableUser loggedInUser)
     {
-        var loginService = services.GetRequiredService<ILoginService>();
         LoginCapableUser? attemptedLogin = null;
+        var loginService = services.GetRequiredService<ILoginService>();
         var loginFailed = false;
 
         while (attemptedLogin == null)
