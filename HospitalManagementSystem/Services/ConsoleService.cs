@@ -5,16 +5,40 @@ namespace HospitalManagementSystem.Services;
 
 public static class ConsoleService
 {
+    public static string ReadString(string prompt)
+    {
+        AnsiConsole.Markup(prompt);
+        return Console.ReadLine() ?? "";
+    }
+
     public static string ReadPassword(string prompt)
-        => AnsiConsole.Prompt(
-            new TextPrompt<string>(prompt)
-                .PromptStyle("grey50")
-                .Secret());
+    {
+        var textPrompt = new TextPrompt<string>(prompt)
+            .PromptStyle("grey50")
+            .Secret();
+
+        return AnsiConsole.Prompt(textPrompt);
+    }
 
     public static int ReadInteger()
     {
         var input = ReadConsole((k, s) => char.IsDigit(k.KeyChar), allowEmpty: false);
         return int.Parse(input);
+    }
+
+    public static DateTime ReadDateTime()
+    {
+        var prompt = new TextPrompt<string>("Enter a date and time (e.g. 2024-07-19 14:30):")
+            .PromptStyle("green")
+            .Validate(input =>
+            {
+                return DateTime.TryParse(input, out _)
+                    ? ValidationResult.Success()
+                    : ValidationResult.Error("[red]Invalid date and time format.[/]");
+            });
+
+        var input = AnsiConsole.Prompt(prompt);
+        return DateTime.Parse(input);
     }
 
     private static string ReadConsole(Func<ConsoleKeyInfo, string, bool> allowKey, bool allowEmpty)
