@@ -3,7 +3,7 @@ using HospitalManagementSystem.Interfaces;
 
 namespace HospitalManagementSystem.Services;
 
-public class LoginService(IPatientRepository patientRepo, IDoctorRepository doctorRepo, IAdministratorRepository adminRepo) : ILoginService
+public class LoginService(IAdministratorRepository adminRepo, IDoctorRepository doctorRepo, IPatientRepository patientRepo) : ILoginService
 {
     public LoginCapableUser? AttemptLogin(int userId, string password)
     {

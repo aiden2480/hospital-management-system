@@ -27,10 +27,6 @@ public interface IPatientRepository : IRepository<Patient> { }
 
 public interface IAppointmentRepository : IRepository<Appointment>
 {
-    public IEnumerable<Appointment> GetByPatient(Patient patient);
-
-    public IEnumerable<Appointment> GetByDoctor(Doctor doctor);
-
     public IEnumerable<Appointment> GetByDoctorAndPatient(Doctor doctor, Patient patient);
 }
 

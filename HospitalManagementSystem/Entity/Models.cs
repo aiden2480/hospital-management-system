@@ -3,7 +3,10 @@
 /// <summary>
 /// A doctor with scheduled appointments, capable of logging into the system.
 /// </summary>
-public class Doctor : LoginCapableUserWithDetails { }
+public class Doctor : LoginCapableUserWithDetails
+{
+    public ICollection<Patient> Patients { get; } = [];
+}
 
 /// <summary>
 /// A patient with scheduled appointments, capable of logging into the system.

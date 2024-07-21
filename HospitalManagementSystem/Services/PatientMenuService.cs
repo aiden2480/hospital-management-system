@@ -40,11 +40,7 @@ internal class PatientMenuService(IAppointmentRepository apptRepo, IDoctorReposi
     }
 
     private void ListPatientAppointments(Patient patient)
-    {
-        var myAppts = apptRepo.GetByPatient(patient);
-
-        AnsiConsole.Write(myAppts.ToTable());
-    }
+        => AnsiConsole.Write(patient.Appointments.ToTable());
 
     private void BookAppointment(Patient patient)
     {
@@ -53,7 +49,7 @@ internal class PatientMenuService(IAppointmentRepository apptRepo, IDoctorReposi
             AssignDoctor(patient);
         }
 
-        var description = ConsoleService.ReadString("Enter description: ");//AnsiConsole.Markup("Enter appointment description: ");
+        var description = ConsoleService.ReadString("Enter appointment description: ");
         var apptTime = ConsoleService.ReadDateTime();
 
         var appt = new Appointment
