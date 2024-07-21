@@ -10,5 +10,5 @@ public interface ILoginService
     /// <param name="userId">User ID. Can be doctor, patient, admin</param>
     /// <param name="password">The password for the account</param>
     /// <returns>The requested user, if the credentials were correct, otherwise null</returns>
-    public LoginCapableUser? AttemptLogin(int userId, string password);
+    public AbstractUser? AttemptLogin(int userId, string password);
 }

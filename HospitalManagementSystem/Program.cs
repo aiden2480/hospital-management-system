@@ -35,9 +35,9 @@ internal class Program
             .AddSingleton<IAppointmentRepository, AppointmentRepository>()
             .BuildServiceProvider();
 
-    private static void InvokeLoginMenu(IServiceProvider services, out LoginCapableUser loggedInUser)
+    private static void InvokeLoginMenu(IServiceProvider services, out AbstractUser loggedInUser)
     {
-        LoginCapableUser? attemptedLogin = null;
+        AbstractUser? attemptedLogin = null;
         var loginService = services.GetRequiredService<ILoginService>();
         var loginFailed = false;
 
@@ -59,7 +59,7 @@ internal class Program
         loggedInUser = attemptedLogin;
     }
 
-    private static void InvokeMainMenu(IServiceProvider services, LoginCapableUser loggedInUser)
+    private static void InvokeMainMenu(IServiceProvider services, AbstractUser loggedInUser)
     {
         if (loggedInUser is Doctor doctor)
         {

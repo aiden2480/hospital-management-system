@@ -5,9 +5,9 @@ namespace HospitalManagementSystem.Services;
 
 public class LoginService(IAdministratorRepository adminRepo, IDoctorRepository doctorRepo, IPatientRepository patientRepo) : ILoginService
 {
-    public LoginCapableUser? AttemptLogin(int userId, string password)
+    public AbstractUser? AttemptLogin(int userId, string password)
     {
-        LoginCapableUser? user = null;
+        AbstractUser? user = null;
 
         user ??= patientRepo.FilterSingle(p => p.Id == userId && p.Password == password);
         user ??= doctorRepo.FilterSingle(d => d.Id == userId && d.Password == password);

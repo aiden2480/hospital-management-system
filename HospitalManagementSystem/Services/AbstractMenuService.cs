@@ -4,7 +4,7 @@ using Spectre.Console;
 
 namespace HospitalManagementSystem.Services;
 
-public abstract class AbstractMenuService<T> : IMenuService<T> where T : LoginCapableUser
+public abstract class AbstractMenuService<T> : IMenuService<T> where T : AbstractUser
 {
     protected abstract string MenuName { get; }
 

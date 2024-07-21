@@ -2,7 +2,7 @@
 
 namespace HospitalManagementSystem.Interfaces;
 
-public interface IMenuService<T> where T : LoginCapableUser
+public interface IMenuService<T> where T : AbstractUser
 {
     void MainMenu(T loggedInUser);
 }

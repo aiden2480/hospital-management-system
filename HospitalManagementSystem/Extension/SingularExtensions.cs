@@ -5,7 +5,7 @@ namespace HospitalManagementSystem.Extension
 {
     static internal class SingularExtensions
     {
-        public static Table ToTable(this LoginCapableUserWithDetails user)
+        public static Table ToTable(this AbstractUserWithAppointments user)
         {
             var type = user.GetType().Name;
             var table = new Table()

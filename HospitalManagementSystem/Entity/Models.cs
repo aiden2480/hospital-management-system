@@ -3,7 +3,7 @@
 /// <summary>
 /// A doctor with scheduled appointments, capable of logging into the system.
 /// </summary>
-public class Doctor : LoginCapableUserWithDetails
+public class Doctor : AbstractUserWithAppointments
 {
     public ICollection<Patient> Patients { get; } = [];
 }
@@ -11,7 +11,7 @@ public class Doctor : LoginCapableUserWithDetails
 /// <summary>
 /// A patient with scheduled appointments, capable of logging into the system.
 /// </summary>
-public class Patient : LoginCapableUserWithDetails
+public class Patient : AbstractUserWithAppointments
 {
     public int? DoctorId { get; set; }
 
@@ -22,7 +22,7 @@ public class Patient : LoginCapableUserWithDetails
 /// An administrator of the system, capable of performing any action on behalf
 /// of doctors or patients
 /// </summary>
-public class Administrator : LoginCapableUser { }
+public class Administrator : AbstractUser { }
 
 /// <summary>
 /// An appointment between a patient and a doctor.

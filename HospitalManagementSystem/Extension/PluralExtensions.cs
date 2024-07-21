@@ -5,7 +5,7 @@ namespace HospitalManagementSystem.Extension;
 
 static internal class PluralExtensions
 {
-    public static Table ToTable(this IEnumerable<LoginCapableUserWithDetails> users)
+    public static Table ToTable(this IEnumerable<AbstractUserWithAppointments> users)
     {
         if (!users.Any())
         {

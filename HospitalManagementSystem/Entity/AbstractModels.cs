@@ -5,7 +5,7 @@ namespace HospitalManagementSystem.Entity;
 /// <summary>
 /// Any user which can login to the system. This includes patients, doctors, and administrators.
 /// </summary>
-public abstract class LoginCapableUser
+public abstract class AbstractUser
 {
     public int Id { get; set; }
 
@@ -16,7 +16,7 @@ public abstract class LoginCapableUser
 /// Any user with details which can login to the system. This includes patients and doctors but
 /// not administrators.
 /// </summary>
-public abstract class LoginCapableUserWithDetails : LoginCapableUser
+public abstract class AbstractUserWithAppointments : AbstractUser
 {
     public required string FirstName { get; init; }
 
