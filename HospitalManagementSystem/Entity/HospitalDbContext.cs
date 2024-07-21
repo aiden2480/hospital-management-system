@@ -13,16 +13,11 @@ public class HospitalDbContext : DbContext
 
     public DbSet<Appointment> Appointments { get; set; }
 
-    public IEnumerable<LoginCapableUser> LoginCapableUsers
-        => Doctors.AsEnumerable().Cast<LoginCapableUser>()
-            .Concat(Patients.Cast<LoginCapableUser>())
-            .Concat(Administrators.Cast<LoginCapableUser>());
-
     public HospitalDbContext()
         => Database.EnsureCreated();
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlServer($"Server={Environment.MachineName};Database=HospitalManagementSystem{DateTime.Now:yyyyMMddHHmmss};Trusted_Connection=True;Encrypt=False");
+        => options.UseSqlServer($"Server={Environment.MachineName};Database=HospitalManagementSystem;Trusted_Connection=True;Encrypt=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

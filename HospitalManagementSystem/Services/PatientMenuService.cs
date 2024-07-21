@@ -6,7 +6,7 @@ using Spectre.Console;
 
 namespace HospitalManagementSystem.Services;
 
-internal class PatientMenuService(HospitalDbContext db) : AbstractMenuService<Patient>, IPatientMenuService
+internal class PatientMenuService(IAppointmentRepository apptRepo, IDoctorRepository doctorRepo) : AbstractMenuService<Patient>, IPatientMenuService
 {
     protected override string MenuName
         => "Patient menu";
@@ -41,13 +41,9 @@ internal class PatientMenuService(HospitalDbContext db) : AbstractMenuService<Pa
 
     private void ListPatientAppointments(Patient patient)
     {
-        var table = db.Appointments
-            .Where(a => a.PatientId == patient.Id)
-            .Include(a => a.Patient)
-            .Include(a => a.Doctor)
-            .ToTable();
+        var myAppts = apptRepo.GetByPatient(patient);
 
-        AnsiConsole.Write(table);
+        AnsiConsole.Write(myAppts.ToTable());
     }
 
     private void BookAppointment(Patient patient)
@@ -68,27 +64,27 @@ internal class PatientMenuService(HospitalDbContext db) : AbstractMenuService<Pa
             Description = description
         };
 
-        db.Appointments.Add(appt);
-        db.SaveChanges();
+        apptRepo.Add(appt);
+        apptRepo.SaveChanges();
 
         AnsiConsole.MarkupLine("[green]Appointment booked successfully[/]");
     }
 
     private void AssignDoctor(Patient patient)
     {
-        var doctors = db.Doctors.ToList();
+        var allDoctors = doctorRepo.GetAll();
 
         AnsiConsole.WriteLine("You do not have an assigned doctor. Please choose one now");
-        AnsiConsole.Write(doctors.ToTable());
+        AnsiConsole.Write(allDoctors.ToTable());
 
         var prompt = new SelectionPrompt<Doctor>()
             .Title("Please choose an option:")
             .MoreChoicesText("[grey](Move up and down to reveal more choices)[/]")
-            .AddChoices(doctors)
+            .AddChoices(allDoctors)
             .PageSize(3)
             .UseConverter(d => d.FullName);
 
         patient.Doctor = AnsiConsole.Prompt(prompt);
-        db.SaveChanges();
+        doctorRepo.SaveChanges();
     }
 }

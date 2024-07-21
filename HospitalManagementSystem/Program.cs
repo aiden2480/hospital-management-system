@@ -1,5 +1,6 @@
 ﻿using HospitalManagementSystem.Entity;
 using HospitalManagementSystem.Interfaces;
+using HospitalManagementSystem.Repositories;
 using HospitalManagementSystem.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
@@ -28,6 +29,10 @@ internal class Program
             .AddSingleton<IDoctorMenuService, DoctorMenuService>()
             .AddSingleton<IPatientMenuService, PatientMenuService>()
             .AddSingleton<IAdminMenuService, AdminMenuService>()
+            .AddSingleton<IDoctorRepository, DoctorRepository>()
+            .AddSingleton<IPatientRepository, PatientRepository>()
+            .AddSingleton<IAdministratorRepository, AdministratorRepository>()
+            .AddSingleton<IAppointmentRepository, AppointmentRepository>()
             .BuildServiceProvider();
 
     private static void InvokeLoginMenu(IServiceProvider services, out LoginCapableUser loggedInUser)
