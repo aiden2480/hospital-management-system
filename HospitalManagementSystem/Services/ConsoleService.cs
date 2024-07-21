@@ -20,9 +20,20 @@ public static class ConsoleService
         return AnsiConsole.Prompt(textPrompt);
     }
 
-    public static int ReadInteger()
+    public static int ReadInteger(string prompt, bool quitOnEsc = false)
     {
-        var input = ReadConsole((k, s) => char.IsDigit(k.KeyChar), allowEmpty: false);
+        AnsiConsole.Markup(prompt);
+
+        var input = ReadConsole((k, s) =>
+        {
+            if (quitOnEsc && k.Key == Escape)
+            {
+                Environment.Exit(0);
+            }
+
+            return char.IsDigit(k.KeyChar) && s.Length < 9;
+        }, allowEmpty: false);
+
         return int.Parse(input);
     }
 
@@ -40,6 +51,12 @@ public static class ConsoleService
         var input = AnsiConsole.Prompt(prompt);
         return DateTime.Parse(input);
     }
+
+    public static Table TitleBox(string menuName)
+        => new Table()
+            .AddColumn("Dotnet Hospital Management System")
+            .AddRow(new Markup(menuName).Centered())
+            .Centered();
 
     private static string ReadConsole(Func<ConsoleKeyInfo, string, bool> allowKey, bool allowEmpty)
     {

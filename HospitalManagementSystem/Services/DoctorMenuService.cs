@@ -8,11 +8,8 @@ namespace HospitalManagementSystem.Services;
 
 internal class DoctorMenuService(IAppointmentRepository apptRepo) : AbstractMenuService<Doctor>, IDoctorMenuService
 {
-    protected override string MenuName
-        => "Doctor menu";
-
     protected override string MenuDescription(Doctor doctor)
-        => $"Welcome to the doctor menu, {doctor.FullName}";
+        => $"Welcome to the doctor menu, [darkmagenta]{doctor.FullName}[/]. You currently have [darkorange]{doctor.Patients.Count}[/] patients and [darkorange]{doctor.Appointments.Count}[/] appointments.";
 
     protected override Dictionary<string, Action<Doctor>> MenuActions => new()
     {

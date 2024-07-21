@@ -44,12 +44,11 @@ internal class Program
         while (attemptedLogin == null)
         {
             AnsiConsole.Clear();
-            AnsiConsole.WriteLine("Welcome to Hospital Management System");
-            AnsiConsole.WriteLine("Please enter your credentials to login.");
-            AnsiConsole.MarkupLine(loginFailed ? "[maroon]Login failed[/]\n" : "\n");
-            AnsiConsole.Write("User ID: ");
+            AnsiConsole.Write(ConsoleService.TitleBox("Login Menu"));
+            AnsiConsole.MarkupLine("Please enter your credentials to login, or press [grey]esc[/] to quit.");
+            AnsiConsole.MarkupLine(loginFailed ? "[maroon]Invalid credentials, please try again.[/]\n" : "\n");
 
-            var userId = ConsoleService.ReadInteger();
+            var userId = ConsoleService.ReadInteger("User ID: ", quitOnEsc: true);
             var password = ConsoleService.ReadPassword("Password: ");
 
             attemptedLogin = loginService.AttemptLogin(userId, password);

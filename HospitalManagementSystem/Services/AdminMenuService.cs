@@ -7,11 +7,8 @@ namespace HospitalManagementSystem.Services;
 
 internal class AdminMenuService(IAppointmentRepository apptRepo, IDoctorRepository doctorRepo, IPatientRepository patientRepo) : AbstractMenuService<Administrator>, IAdminMenuService
 {
-    protected override string MenuName
-        => "Administrator menu";
-
     protected override string MenuDescription(Administrator admin)
-        => $"Welcome to the admin menu, {admin.Id}";
+        => $"Welcome to the admin menu, [darkmagenta]{admin.FullName}[/]. The hospital currently has [darkorange]{doctorRepo.GetTotalCount()}[/] doctors and [darkorange]{patientRepo.GetTotalCount()}[/] patients.";
 
     protected override Dictionary<string, Action<Administrator>> MenuActions => new()
     {

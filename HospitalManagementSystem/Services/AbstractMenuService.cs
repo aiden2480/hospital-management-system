@@ -6,8 +6,6 @@ namespace HospitalManagementSystem.Services;
 
 public abstract class AbstractMenuService<T> : IMenuService<T> where T : AbstractUser
 {
-    protected abstract string MenuName { get; }
-
     protected abstract string MenuDescription(T loggedInUser);
 
     protected abstract Dictionary<string, Action<T>> MenuActions { get; }
@@ -15,26 +13,9 @@ public abstract class AbstractMenuService<T> : IMenuService<T> where T : Abstrac
     public void MainMenu(T loggedInUser)
     {
         AnsiConsole.Clear();
+        AnsiConsole.Write(ConsoleService.TitleBox($"{typeof(T).Name} Menu"));
 
-        var table = new Table()
-            .AddColumn("Dotnet Hospital Management System")
-            .AddRow(MenuName)
-            .Centered();
-
-        AnsiConsole.Write(table);
-
-        //AnsiConsole.Write(new Panel(table)
-        //    //.Expand()
-        //    .Border(BoxBorder.Rounded)
-        //    .Header("Table header");
-        //AnsiConsole.WriteLine(MenuDescription(loggedInUser));
-
-        var selection = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("Please choose an option:")
-                .MoreChoicesText("[grey](Move up and down to reveal more choices)[/]")
-                .AddChoices(MenuActions.Keys)
-                .AddChoices("Exit to login", "Exit to system"));
+        var selection = GetSelection(loggedInUser);
 
         if (selection == "Exit to login")
         {
@@ -44,12 +25,23 @@ public abstract class AbstractMenuService<T> : IMenuService<T> where T : Abstrac
         {
             Environment.Exit(0);
         }
+        else
+        {
+            MenuActions[selection].Invoke(loggedInUser);
+            WaitForUser();
+            MainMenu(loggedInUser);
+        }
+    }
 
-        var method = MenuActions[selection];
-        method.Invoke(loggedInUser);
+    private string GetSelection(T loggedInUser)
+    {
+        var prompt = new SelectionPrompt<string>()
+            .Title($"{MenuDescription(loggedInUser)}\n\nPlease choose an option:")
+            .MoreChoicesText("[grey](Move up and down to reveal more choices)[/]")
+            .AddChoices(MenuActions.Keys)
+            .AddChoices("Exit to login", "Exit to system");
 
-        WaitForUser();
-        MainMenu(loggedInUser);
+        return AnsiConsole.Prompt(prompt);
     }
 
     private static void WaitForUser()
