@@ -20,14 +20,24 @@ internal class AbstractRepository<T>(HospitalDbContext db) : IRepository<T> wher
     public T? FilterSingle(Func<T, bool> predicate)
         => _entities.Where(predicate).FirstOrDefault();
 
-    public void Add(T entity)
-        => _entities.Add(entity);
+    // CUD operations return this so they can be chained
+    public IRepository<T> Add(T entity)
+    {
+        _entities.Add(entity);
+        return this;
+    }
 
-    public void Update(T entity)
-        => _entities.Update(entity);
+    public IRepository<T> Update(T entity)
+    {
+        _entities.Update(entity);
+        return this;
+    }
 
-    public void Remove(T entity)
-        => _entities.Remove(entity);
+    public IRepository<T> Remove(T entity)
+    {
+        _entities.Remove(entity);
+        return this;
+    }
 
     public void SaveChanges()
         => db.SaveChanges();

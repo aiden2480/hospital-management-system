@@ -12,11 +12,11 @@ public interface IRepository<T> where T : class
 
     T? FilterSingle(Func<T, bool> predicate);
 
-    void Add(T entity);
+    IRepository<T> Add(T entity);
 
-    void Update(T entity);
+    IRepository<T> Update(T entity);
 
-    void Remove(T entity);
+    IRepository<T> Remove(T entity);
 
     void SaveChanges();
 }
