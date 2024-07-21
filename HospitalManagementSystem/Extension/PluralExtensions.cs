@@ -7,6 +7,11 @@ static internal class PluralExtensions
 {
     public static Table ToTable(this IEnumerable<LoginCapableUserWithDetails> users)
     {
+        if (!users.Any())
+        {
+            return new Table().AddColumn("There are no users");
+        }
+
         var table = new Table()
             .AddColumn("Full Name")
             .AddColumn("Email")
@@ -23,6 +28,11 @@ static internal class PluralExtensions
 
     public static Table ToTable(this IEnumerable<Appointment> appointments)
     {
+        if (!appointments.Any())
+        {
+            return new Table().AddColumn("There are no appointments");
+        }
+
         var table = new Table()
             .AddColumn("Appointment ID")
             .AddColumn("Doctor")
