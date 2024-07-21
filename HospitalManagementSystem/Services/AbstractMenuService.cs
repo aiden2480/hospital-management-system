@@ -54,7 +54,7 @@ public abstract class AbstractMenuService<T> : IMenuService<T> where T : LoginCa
 
     private static void WaitForUser()
     {
-        AnsiConsole.Markup("[grey]Press enter to continue...[/]");
+        AnsiConsole.Markup("\n[grey]Press enter to continue...[/]");
         Console.ReadKey(true);
     }
 }
