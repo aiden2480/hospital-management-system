@@ -20,6 +20,9 @@ internal class AbstractRepository<T>(HospitalDbContext db) : IRepository<T> wher
     public T? FilterSingle(Func<T, bool> predicate)
         => _entities.Where(predicate).FirstOrDefault();
 
+    public int GetTotalCount()
+        => _entities.Count();
+
     // CUD operations return this so they can be chained
     public IRepository<T> Add(T entity)
     {

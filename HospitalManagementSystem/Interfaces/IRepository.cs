@@ -12,6 +12,8 @@ public interface IRepository<T> where T : class
 
     T? FilterSingle(Func<T, bool> predicate);
 
+    int GetTotalCount();
+
     IRepository<T> Add(T entity);
 
     IRepository<T> Update(T entity);
