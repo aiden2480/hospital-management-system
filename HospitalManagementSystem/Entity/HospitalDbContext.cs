@@ -71,16 +71,16 @@ public class HospitalDbContext : DbContext
             new Patient { Id = 20010, FirstName = "Jimmy", LastName = "Reyes", Email = "grace48@yahoo.com", PhoneNumber = "0488841764", AddrStreetNumber = "269", AddrStreet = "Edward Isle", AddrCity = "West Natashabury", AddrState = "ACT", Password = "password" });
 
         modelBuilder.Entity<Administrator>().HasData(
-            new Administrator { Id = 30001, Password = "p@ssw0rd" },
-            new Administrator { Id = 20002, Password = "p@ssw0rd" },
-            new Administrator { Id = 20003, Password = "p@ssw0rd" },
-            new Administrator { Id = 20004, Password = "p@ssw0rd" },
-            new Administrator { Id = 20005, Password = "p@ssw0rd" },
-            new Administrator { Id = 20006, Password = "p@ssw0rd" },
-            new Administrator { Id = 20007, Password = "p@ssw0rd" },
-            new Administrator { Id = 20008, Password = "p@ssw0rd" },
-            new Administrator { Id = 20009, Password = "p@ssw0rd" },
-            new Administrator { Id = 20010, Password = "p@ssw0rd" });
+            new Administrator { Id = 30001, FirstName = "Nathan", LastName = "Mitchell", Password = "p@ssw0rd" },
+            new Administrator { Id = 30002, FirstName = "Frances", LastName = "Brooks", Password = "p@ssw0rd" },
+            new Administrator { Id = 30003, FirstName = "Barbara", LastName = "May", Password = "p@ssw0rd" },
+            new Administrator { Id = 30004, FirstName = "Timothy", LastName = "Garcia", Password = "p@ssw0rd" },
+            new Administrator { Id = 30005, FirstName = "Billy", LastName = "Sullivan", Password = "p@ssw0rd" },
+            new Administrator { Id = 30006, FirstName = "Michael", LastName = "Winters", Password = "p@ssw0rd" },
+            new Administrator { Id = 30007, FirstName = "Robin", LastName = "Munoz", Password = "p@ssw0rd" },
+            new Administrator { Id = 30008, FirstName = "Dana", LastName = "Reese", Password = "p@ssw0rd" },
+            new Administrator { Id = 30009, FirstName = "Gregory", LastName = "Brown", Password = "p@ssw0rd" },
+            new Administrator { Id = 30010, FirstName = "Jill", LastName = "Mendoza", Password = "p@ssw0rd" });
 
         modelBuilder.Entity<Appointment>().HasData(
             new Appointment { Id = 40001, DoctorId = 10001, PatientId = 20001, ScheduledTime = DateTime.Now.AddHours(89), Description = "Regular checkup" },

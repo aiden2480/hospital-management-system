@@ -9,7 +9,14 @@ public abstract class AbstractUser
 {
     public int Id { get; set; }
 
+    public required string FirstName { get; init; }
+
+    public required string LastName { get; init; }
+
     public required string Password { get; init; }
+
+    [NotMapped]
+    public string FullName => $"{FirstName} {LastName}";
 }
 
 /// <summary>
@@ -18,10 +25,6 @@ public abstract class AbstractUser
 /// </summary>
 public abstract class AbstractUserWithAppointments : AbstractUser
 {
-    public required string FirstName { get; init; }
-
-    public required string LastName { get; init; }
-
     public required string Email { get; init; }
 
     public required string PhoneNumber { get; init; }
@@ -35,9 +38,6 @@ public abstract class AbstractUserWithAppointments : AbstractUser
     public required string AddrState { get; init; }
 
     public ICollection<Appointment> Appointments { get; } = [];
-
-    [NotMapped]
-    public string FullName => $"{FirstName} {LastName}";
 
     [NotMapped]
     public string FullAddr => $"{AddrStreetNumber} {AddrStreet}, {AddrCity}, {AddrState}";
