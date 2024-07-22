@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace HospitalManagementSystem.Entity;
 
@@ -16,7 +17,7 @@ public class HospitalDbContext : DbContext
         => Database.EnsureCreated();
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlServer($"Server={Environment.MachineName};Database=HospitalManagementSystem;Trusted_Connection=True;Encrypt=False");
+        => options.UseSqlServer(ConfigurationManager.ConnectionStrings["HospitalDbContext"].ConnectionString);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

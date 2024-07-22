@@ -78,7 +78,7 @@ internal class AdminMenuService(IAppointmentRepository apptRepo, IDoctorReposito
     // to create the two essentially identical objects without breaking type safety
     private static Doctor CreateNewDoctor()
     {
-        AnsiConsole.MarkupLine($"Creating a new [blue]doctor[/]:");
+        AnsiConsole.MarkupLine($"Creating a new [blue]doctor[/]:\n");
 
         return new Doctor()
         {
@@ -96,7 +96,7 @@ internal class AdminMenuService(IAppointmentRepository apptRepo, IDoctorReposito
 
     private static Patient CreateNewPatient()
     {
-        AnsiConsole.MarkupLine($"Creating a new [blue]patient[/]:");
+        AnsiConsole.MarkupLine($"Creating a new [blue]patient[/]:\n");
 
         return new Patient()
         {

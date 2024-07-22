@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<connectionStrings>
+		<add name="HospitalDbContext"
+			 connectionString="Server=(local);Database=HospitalManagementSystem;Trusted_Connection=True;Encrypt=False"
+			 providerName="System.Data.SqlClient" />
+	</connectionStrings>
+	<appSettings>
+		<add key="SmtpHost" value="smtp.gmail.com" />
+		<add key="SmtpPort" value="587" />
+		<add key="SmtpUser" value="username@gmail.com" />
+		<add key="SmtpPass" value="app specific password" />
+		<add key="SmtpEnableSsl" value="true" />
+	</appSettings>
+</configuration>

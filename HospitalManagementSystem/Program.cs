@@ -4,6 +4,7 @@ using HospitalManagementSystem.Repositories;
 using HospitalManagementSystem.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
+using System.Configuration;
 
 namespace HospitalManagementSystem;
 
@@ -11,6 +12,7 @@ internal class Program
 {
     static void Main()
     {
+        EnsureRequiredSettingsSet();
         var services = GetServices();
 
         // This can be wrapped in a while true method because
@@ -72,5 +74,17 @@ internal class Program
         {
             services.GetRequiredService<IAdminMenuService>().MainMenu(admin);
         }
+    }
+
+    private static void EnsureRequiredSettingsSet()
+    {
+        static void NullCheck(string name)
+            => ArgumentNullException.ThrowIfNull(ConfigurationManager.AppSettings[name], name);
+
+        NullCheck("SmtpHost");
+        NullCheck("SmtpPort");
+        NullCheck("SmtpUser");
+        NullCheck("SmtpPass");
+        NullCheck("SmtpEnableSsl");
     }
 }
