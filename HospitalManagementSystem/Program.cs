@@ -28,6 +28,7 @@ internal class Program
         => new ServiceCollection()
             .AddDbContext<HospitalDbContext>()
             .AddSingleton<ILoginService, LoginService>()
+            .AddSingleton<IEmailService, EmailService>()
             .AddSingleton<IDoctorMenuService, DoctorMenuService>()
             .AddSingleton<IPatientMenuService, PatientMenuService>()
             .AddSingleton<IAdminMenuService, AdminMenuService>()
