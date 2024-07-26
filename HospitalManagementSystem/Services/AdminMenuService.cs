@@ -5,7 +5,7 @@ using Spectre.Console;
 
 namespace HospitalManagementSystem.Services;
 
-internal class AdminMenuService(IAppointmentRepository apptRepo, IDoctorRepository doctorRepo, IPasswordService passwordService, IPatientRepository patientRepo) : AbstractMenuService<Administrator>, IAdminMenuService
+internal class AdminMenuService(IAppointmentRepository apptRepo, IConsoleService consoleService, IDoctorRepository doctorRepo, IPatientRepository patientRepo) : AbstractMenuService<Administrator>, IAdminMenuService
 {
     protected override string MenuDescription(Administrator admin)
         => $"Welcome to the admin menu, [darkmagenta]{admin.FullName}[/]. The hospital currently has [darkorange]{doctorRepo.GetTotalCount()}[/] doctors and [darkorange]{patientRepo.GetTotalCount()}[/] patients.";
@@ -82,15 +82,15 @@ internal class AdminMenuService(IAppointmentRepository apptRepo, IDoctorReposito
 
         return new Doctor()
         {
-            FirstName = ConsoleService.ReadString("First name: "),
-            LastName = ConsoleService.ReadString("Last name: "),
-            Email = ConsoleService.ReadString("Email: "),
-            PhoneNumber = ConsoleService.ReadString("Phone number: "),
-            AddrStreetNumber = ConsoleService.ReadString("Street number: "),
-            AddrStreet = ConsoleService.ReadString("Street: "),
-            AddrCity = ConsoleService.ReadString("City: "),
-            AddrState = ConsoleService.ReadString("State: "),
-            PasswordHash = Hash(ConsoleService.ReadPassword("Password: ")),
+            FirstName = consoleService.ReadString("First name: "),
+            LastName = consoleService.ReadString("Last name: "),
+            Email = consoleService.ReadEmail("Email: "),
+            PhoneNumber = consoleService.ReadPhoneNumber("Phone number: "),
+            AddrStreetNumber = consoleService.ReadString("Street number: "),
+            AddrStreet = consoleService.ReadString("Street: "),
+            AddrCity = consoleService.ReadString("City: "),
+            AddrState = consoleService.ReadString("State: "),
+            PasswordHash = consoleService.ReadAndHashPassword("Password: "),
         };
     }
 
@@ -100,20 +100,17 @@ internal class AdminMenuService(IAppointmentRepository apptRepo, IDoctorReposito
 
         return new Patient()
         {
-            FirstName = ConsoleService.ReadString("First name: "),
-            LastName = ConsoleService.ReadString("Last name: "),
-            Email = ConsoleService.ReadString("Email: "),
-            PhoneNumber = ConsoleService.ReadString("Phone number: "),
-            AddrStreetNumber = ConsoleService.ReadString("Street number: "),
-            AddrStreet = ConsoleService.ReadString("Street: "),
-            AddrCity = ConsoleService.ReadString("City: "),
-            AddrState = ConsoleService.ReadString("State: "),
-            PasswordHash = Hash(ConsoleService.ReadPassword("Password: ")),
+            FirstName = consoleService.ReadString("First name: "),
+            LastName = consoleService.ReadString("Last name: "),
+            Email = consoleService.ReadEmail("Email: "),
+            PhoneNumber = consoleService.ReadPhoneNumber("Phone number: "),
+            AddrStreetNumber = consoleService.ReadString("Street number: "),
+            AddrStreet = consoleService.ReadString("Street: "),
+            AddrCity = consoleService.ReadString("City: "),
+            AddrState = consoleService.ReadString("State: "),
+            PasswordHash = consoleService.ReadAndHashPassword("Password: "),
         };
 
         // todo return new doctor ID and also reset password
     }
-
-    private string Hash(string password)
-        => passwordService.HashPassword(password);
 }

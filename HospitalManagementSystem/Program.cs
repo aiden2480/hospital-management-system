@@ -29,6 +29,7 @@ internal class Program
             .AddDbContext<HospitalDbContext>()
             .AddSingleton<ILoginService, LoginService>()
             .AddSingleton<IEmailService, EmailService>()
+            .AddSingleton<IConsoleService, ConsoleService>()
             .AddSingleton<IPasswordService, PasswordService>()
             .AddSingleton<IDoctorMenuService, DoctorMenuService>()
             .AddSingleton<IPatientMenuService, PatientMenuService>()
@@ -42,8 +43,9 @@ internal class Program
     private static void InvokeLoginMenu(IServiceProvider services, out AbstractUser loggedInUser)
     {
         AbstractUser? attemptedLogin = null;
-        var loginService = services.GetRequiredService<ILoginService>();
         var loginFailed = false;
+        var loginService = services.GetRequiredService<ILoginService>();
+        var consoleService = services.GetRequiredService<IConsoleService>();
 
         while (attemptedLogin == null)
         {
@@ -52,8 +54,8 @@ internal class Program
             AnsiConsole.MarkupLine("Please enter your credentials to login, or press [grey]esc[/] to quit.");
             AnsiConsole.MarkupLine(loginFailed ? "[maroon]Invalid credentials, please try again.[/]\n" : "\n");
 
-            var userId = ConsoleService.ReadInteger("User ID: ", quitOnEsc: true);
-            var password = ConsoleService.ReadPassword("Password: ");
+            var userId = consoleService.ReadInteger("User ID: ", quitOnEsc: true);
+            var password = consoleService.ReadPassword("Password: ");
 
             attemptedLogin = loginService.AttemptLogin(userId, password);
             loginFailed = true;

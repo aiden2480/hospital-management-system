@@ -1,26 +1,24 @@
-﻿using Spectre.Console;
+﻿using HospitalManagementSystem.Interfaces;
+using Spectre.Console;
+using System.Text.RegularExpressions;
 using static System.ConsoleKey;
 
 namespace HospitalManagementSystem.Services;
 
-public static class ConsoleService
+internal partial class ConsoleService(IPasswordService passwordService) : IConsoleService
 {
-    public static string ReadString(string prompt)
-    {
-        AnsiConsole.Markup(prompt);
-        return Console.ReadLine() ?? "";
-    }
+    public string ReadString(string prompt)
+        => AnsiConsole.Ask<string>(prompt);
 
-    public static string ReadPassword(string prompt)
-    {
-        var textPrompt = new TextPrompt<string>(prompt)
+    public string ReadPassword(string prompt)
+        => AnsiConsole.Prompt(new TextPrompt<string>(prompt)
             .PromptStyle("grey50")
-            .Secret();
+            .Secret());
 
-        return AnsiConsole.Prompt(textPrompt);
-    }
+    public string ReadAndHashPassword(string prmopt)
+        => passwordService.HashPassword(ReadPassword(prmopt));
 
-    public static int ReadInteger(string prompt, bool quitOnEsc = false)
+    public int ReadInteger(string prompt, bool quitOnEsc = false)
     {
         AnsiConsole.Markup(prompt);
 
@@ -37,7 +35,7 @@ public static class ConsoleService
         return int.Parse(input);
     }
 
-    public static DateTime ReadDateTime()
+    public DateTime ReadDateTime()
     {
         var prompt = new TextPrompt<string>("Enter a date and time (e.g. 2024-07-19 14:30):")
             .PromptStyle("green")
@@ -51,6 +49,14 @@ public static class ConsoleService
         var input = AnsiConsole.Prompt(prompt);
         return DateTime.Parse(input);
     }
+
+    public string ReadEmail(string prompt)
+        => AnsiConsole.Prompt(new TextPrompt<string>(prompt)
+            .Validate(EmailRegex.IsMatch));
+
+    public string ReadPhoneNumber(string prompt)
+        => AnsiConsole.Prompt(new TextPrompt<string>(prompt)
+            .Validate(PhoneNumberRegex.IsMatch));
 
     public static Table TitleBox(string menuName)
         => new Table()
@@ -103,4 +109,15 @@ public static class ConsoleService
             input += keyInfo.KeyChar;
         }
     }
+
+    // Regex
+    private readonly Regex EmailRegex = MakeEmailRegex();
+
+    private readonly Regex PhoneNumberRegex = MakePhoneNumberRegex();
+
+    [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
+    private static partial Regex MakeEmailRegex();
+
+    [GeneratedRegex(@"04\d{8}")]
+    private static partial Regex MakePhoneNumberRegex();
 }

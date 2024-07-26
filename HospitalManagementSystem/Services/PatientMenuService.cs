@@ -6,7 +6,7 @@ using Spectre.Console;
 
 namespace HospitalManagementSystem.Services;
 
-internal class PatientMenuService(IAppointmentRepository apptRepo, IDoctorRepository doctorRepo, IEmailService emailService) : AbstractMenuService<Patient>, IPatientMenuService
+internal class PatientMenuService(IAppointmentRepository apptRepo, IConsoleService consoleService, IDoctorRepository doctorRepo, IEmailService emailService) : AbstractMenuService<Patient>, IPatientMenuService
 {
     protected override string MenuDescription(Patient patient)
         => $"Welcome to the patient menu, [darkmagenta]{patient.FullName}[/]. You currently have [darkorange]{patient.Appointments.Count}[/] appointments.";
@@ -46,8 +46,8 @@ internal class PatientMenuService(IAppointmentRepository apptRepo, IDoctorReposi
             AssignDoctor(patient);
         }
 
-        var description = ConsoleService.ReadString("Enter appointment description: ");
-        var apptTime = ConsoleService.ReadDateTime();
+        var description = consoleService.ReadString("Enter appointment description: ");
+        var apptTime = consoleService.ReadDateTime();
 
         var appt = new Appointment
         {
