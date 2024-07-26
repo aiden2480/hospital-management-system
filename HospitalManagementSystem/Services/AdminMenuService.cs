@@ -5,7 +5,7 @@ using Spectre.Console;
 
 namespace HospitalManagementSystem.Services;
 
-internal class AdminMenuService(IAppointmentRepository apptRepo, IDoctorRepository doctorRepo, IPatientRepository patientRepo) : AbstractMenuService<Administrator>, IAdminMenuService
+internal class AdminMenuService(IAppointmentRepository apptRepo, IDoctorRepository doctorRepo, IPasswordService passwordService, IPatientRepository patientRepo) : AbstractMenuService<Administrator>, IAdminMenuService
 {
     protected override string MenuDescription(Administrator admin)
         => $"Welcome to the admin menu, [darkmagenta]{admin.FullName}[/]. The hospital currently has [darkorange]{doctorRepo.GetTotalCount()}[/] doctors and [darkorange]{patientRepo.GetTotalCount()}[/] patients.";
@@ -76,7 +76,7 @@ internal class AdminMenuService(IAppointmentRepository apptRepo, IDoctorReposito
 
     // The following two methods break DRY but I couldn't figure out another way
     // to create the two essentially identical objects without breaking type safety
-    private static Doctor CreateNewDoctor()
+    private Doctor CreateNewDoctor()
     {
         AnsiConsole.MarkupLine($"Creating a new [blue]doctor[/]:\n");
 
@@ -90,11 +90,11 @@ internal class AdminMenuService(IAppointmentRepository apptRepo, IDoctorReposito
             AddrStreet = ConsoleService.ReadString("Street: "),
             AddrCity = ConsoleService.ReadString("City: "),
             AddrState = ConsoleService.ReadString("State: "),
-            Password = ConsoleService.ReadPassword("Password: "),
+            PasswordHash = Hash(ConsoleService.ReadPassword("Password: ")),
         };
     }
 
-    private static Patient CreateNewPatient()
+    private Patient CreateNewPatient()
     {
         AnsiConsole.MarkupLine($"Creating a new [blue]patient[/]:\n");
 
@@ -108,7 +108,12 @@ internal class AdminMenuService(IAppointmentRepository apptRepo, IDoctorReposito
             AddrStreet = ConsoleService.ReadString("Street: "),
             AddrCity = ConsoleService.ReadString("City: "),
             AddrState = ConsoleService.ReadString("State: "),
-            Password = ConsoleService.ReadPassword("Password: "),
+            PasswordHash = Hash(ConsoleService.ReadPassword("Password: ")),
         };
+
+        // todo return new doctor ID and also reset password
     }
+
+    private string Hash(string password)
+        => passwordService.HashPassword(password);
 }

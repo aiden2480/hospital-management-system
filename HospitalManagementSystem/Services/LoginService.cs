@@ -3,16 +3,23 @@ using HospitalManagementSystem.Interfaces;
 
 namespace HospitalManagementSystem.Services;
 
-public class LoginService(IAdministratorRepository adminRepo, IDoctorRepository doctorRepo, IPatientRepository patientRepo) : ILoginService
+public class LoginService(IAdministratorRepository adminRepo, IDoctorRepository doctorRepo, IPasswordService passwordService, IPatientRepository patientRepo) : ILoginService
 {
     public AbstractUser? AttemptLogin(int userId, string password)
     {
-        AbstractUser? user = null;
+        // First we check if the ID exists
+        var allUsers = adminRepo.GetAll().Cast<AbstractUser>()
+            .Concat(doctorRepo.GetAll().Cast<AbstractUser>())
+            .Concat(patientRepo.GetAll().Cast<AbstractUser>());
 
-        user ??= patientRepo.FilterSingle(p => p.Id == userId && p.Password == password);
-        user ??= doctorRepo.FilterSingle(d => d.Id == userId && d.Password == password);
-        user ??= adminRepo.FilterSingle(a => a.Id == userId && a.Password == password);
+        var user = allUsers.SingleOrDefault(u => u.Id == userId);
 
-        return user;
+        // If it exists, check the password hash is the same
+        if (user != null && passwordService.ValidatePassword(password, user.PasswordHash))
+        {
+            return user;
+        }
+
+        return null;
     }
 }

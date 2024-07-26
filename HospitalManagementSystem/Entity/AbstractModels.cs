@@ -13,7 +13,7 @@ public abstract class AbstractUser
 
     public required string LastName { get; init; }
 
-    public required string Password { get; init; }
+    public required string PasswordHash { get; init; }
 
     [NotMapped]
     public string FullName => $"{FirstName} {LastName}";

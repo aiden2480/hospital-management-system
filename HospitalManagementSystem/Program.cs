@@ -29,6 +29,7 @@ internal class Program
             .AddDbContext<HospitalDbContext>()
             .AddSingleton<ILoginService, LoginService>()
             .AddSingleton<IEmailService, EmailService>()
+            .AddSingleton<IPasswordService, PasswordService>()
             .AddSingleton<IDoctorMenuService, DoctorMenuService>()
             .AddSingleton<IPatientMenuService, PatientMenuService>()
             .AddSingleton<IAdminMenuService, AdminMenuService>()
