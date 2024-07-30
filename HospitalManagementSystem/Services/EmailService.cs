@@ -70,6 +70,9 @@ internal class EmailService : IEmailService
         client.Send(message);
     }
 
+    public Task SendAppointmentConfirmationAsync(Appointment appointment)
+        => Task.Run(() => SendAppointmentConfirmation(appointment));
+
     private readonly string FromEmail = AppSettings["SmtpUser"]!;
 
     private SmtpClient GetClient() => new()

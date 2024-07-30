@@ -58,7 +58,7 @@ internal class PatientMenuService(IAppointmentRepository apptRepo, IConsoleServi
         };
 
         apptRepo.Add(appt).SaveChanges();
-        emailService.SendAppointmentConfirmation(appt);
+        emailService.SendAppointmentConfirmationAsync(appt);
 
         AnsiConsole.MarkupLine("[green]Appointment booked successfully[/]");
     }

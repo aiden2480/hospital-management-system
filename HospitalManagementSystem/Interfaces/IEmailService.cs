@@ -7,4 +7,6 @@ internal interface IEmailService
     void SendEmail(string toEmail, string subject, string body);
 
     void SendAppointmentConfirmation(Appointment appointment);
+
+    Task SendAppointmentConfirmationAsync(Appointment appointment);
 }
