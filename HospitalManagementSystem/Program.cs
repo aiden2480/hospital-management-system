@@ -14,6 +14,8 @@ internal class Program
     {
         EnsureRequiredSettingsSet();
         var services = GetServices();
+        var db = services.GetRequiredService<HospitalDbContext>();
+        db.Database.EnsureCreated();
 
         // This can be wrapped in a while true method because
         // the main menu should call Environment.Exit if needed

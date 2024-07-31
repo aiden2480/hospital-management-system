@@ -6,13 +6,13 @@ namespace HospitalManagementSystem.Entity;
 
 public class HospitalDbContext(IPasswordService passwordService) : DbContext
 {
-    public DbSet<Doctor> Doctors { get; set; }
+    public virtual DbSet<Doctor> Doctors { get; set; }
 
-    public DbSet<Patient> Patients { get; set; }
+    public virtual DbSet<Patient> Patients { get; set; }
 
-    public DbSet<Administrator> Administrators { get; set; }
+    public virtual DbSet<Administrator> Administrators { get; set; }
 
-    public DbSet<Appointment> Appointments { get; set; }
+    public virtual DbSet<Appointment> Appointments { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlServer(ConfigurationManager.ConnectionStrings["HospitalDbContext"].ConnectionString);
@@ -43,6 +43,17 @@ public class HospitalDbContext(IPasswordService passwordService) : DbContext
             .Property(e => e.Id)
             .ValueGeneratedOnAdd()
             .UseIdentityColumn(40001, 1);
+
+        // Specify autoinclude columns
+        modelBuilder
+            .Entity<Doctor>()
+            .Navigation(e => e.Appointments)
+            .AutoInclude();
+
+        modelBuilder
+            .Entity<Patient>()
+            .Navigation(e => e.Appointments)
+            .AutoInclude();
 
         // Insert dummy data
         modelBuilder.Entity<Doctor>().HasData(

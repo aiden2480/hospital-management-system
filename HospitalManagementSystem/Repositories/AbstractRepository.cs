@@ -8,9 +8,6 @@ internal class AbstractRepository<T>(HospitalDbContext db) : IRepository<T> wher
 {
     protected readonly DbSet<T> _entities = db.Set<T>();
 
-    public T? GetById(int id)
-        => _entities.Find(id);
-
     public IEnumerable<T> GetAll()
         => _entities.ToList();
 
@@ -27,12 +24,6 @@ internal class AbstractRepository<T>(HospitalDbContext db) : IRepository<T> wher
     public IRepository<T> Add(T entity)
     {
         _entities.Add(entity);
-        return this;
-    }
-
-    public IRepository<T> Update(T entity)
-    {
-        _entities.Update(entity);
         return this;
     }
 

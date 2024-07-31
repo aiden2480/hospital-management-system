@@ -4,8 +4,6 @@ namespace HospitalManagementSystem.Interfaces;
 
 public interface IRepository<T> where T : class
 {
-    T? GetById(int id);
-
     IEnumerable<T> GetAll();
 
     IEnumerable<T> Filter(Func<T, bool> predicate);
@@ -15,8 +13,6 @@ public interface IRepository<T> where T : class
     int GetTotalCount();
 
     IRepository<T> Add(T entity);
-
-    IRepository<T> Update(T entity);
 
     IRepository<T> Remove(T entity);
 
