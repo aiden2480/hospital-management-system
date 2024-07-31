@@ -65,7 +65,10 @@ internal class PatientMenuService(IAppointmentRepository apptRepo, IConsoleServi
 
     private void AssignDoctor(Patient patient)
     {
-        var allDoctors = doctorRepo.GetAll();
+        var allDoctors = doctorRepo
+            .GetAll()
+            .Where(p => p != null)
+            .ToList();
 
         AnsiConsole.WriteLine("You do not have an assigned doctor. Please choose one now");
         AnsiConsole.Write(allDoctors.ToTable());
