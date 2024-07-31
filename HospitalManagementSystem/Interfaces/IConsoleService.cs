@@ -4,6 +4,8 @@ public interface IConsoleService
 {
     string ReadString(string prompt);
 
+    string ReadString(string prompt, int length);
+
     string ReadPassword(string prompt);
 
     string ReadAndHashPassword(string prompt);

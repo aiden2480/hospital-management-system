@@ -82,14 +82,14 @@ internal class AdminMenuService(IAppointmentRepository apptRepo, IConsoleService
 
         return new Doctor()
         {
-            FirstName = consoleService.ReadString("First name: "),
-            LastName = consoleService.ReadString("Last name: "),
+            FirstName = consoleService.ReadString("First name: ", 30),
+            LastName = consoleService.ReadString("Last name: ", 30),
             Email = consoleService.ReadEmail("Email: "),
             PhoneNumber = consoleService.ReadPhoneNumber("Phone number: "),
-            AddrStreetNumber = consoleService.ReadString("Street number: "),
-            AddrStreet = consoleService.ReadString("Street: "),
-            AddrCity = consoleService.ReadString("City: "),
-            AddrState = consoleService.ReadString("State: "),
+            AddrStreetNumber = consoleService.ReadString("Street number: ", 10),
+            AddrStreet = consoleService.ReadString("Street: ", 30),
+            AddrCity = consoleService.ReadString("City: ", 30),
+            AddrState = consoleService.ReadString("State: ", 15),
             PasswordHash = consoleService.ReadAndHashPassword("Password: "),
         };
     }
@@ -100,17 +100,15 @@ internal class AdminMenuService(IAppointmentRepository apptRepo, IConsoleService
 
         return new Patient()
         {
-            FirstName = consoleService.ReadString("First name: "),
-            LastName = consoleService.ReadString("Last name: "),
+            FirstName = consoleService.ReadString("First name: ", 30),
+            LastName = consoleService.ReadString("Last name: ", 30),
             Email = consoleService.ReadEmail("Email: "),
             PhoneNumber = consoleService.ReadPhoneNumber("Phone number: "),
-            AddrStreetNumber = consoleService.ReadString("Street number: "),
-            AddrStreet = consoleService.ReadString("Street: "),
-            AddrCity = consoleService.ReadString("City: "),
-            AddrState = consoleService.ReadString("State: "),
+            AddrStreetNumber = consoleService.ReadString("Street number: ", 10),
+            AddrStreet = consoleService.ReadString("Street: ", 30),
+            AddrCity = consoleService.ReadString("City: ", 30),
+            AddrState = consoleService.ReadString("State: ", 15),
             PasswordHash = consoleService.ReadAndHashPassword("Password: "),
         };
-
-        // todo return new doctor ID and also reset password
     }
 }

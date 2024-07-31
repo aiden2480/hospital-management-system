@@ -10,6 +10,11 @@ internal partial class ConsoleService(IPasswordService passwordService) : IConso
     public string ReadString(string prompt)
         => AnsiConsole.Ask<string>(prompt);
 
+    public string ReadString(string prompt, int length)
+        => AnsiConsole.Prompt(new TextPrompt<string>(prompt)
+            .Validate(s => s.Length <= length)
+            .ValidationErrorMessage($"[red]Input must be of length less than or equal to {length}[/]"));
+
     public string ReadPassword(string prompt)
         => AnsiConsole.Prompt(new TextPrompt<string>(prompt)
             .PromptStyle("grey50")
@@ -52,11 +57,13 @@ internal partial class ConsoleService(IPasswordService passwordService) : IConso
 
     public string ReadEmail(string prompt)
         => AnsiConsole.Prompt(new TextPrompt<string>(prompt)
-            .Validate(EmailRegex.IsMatch));
+            .Validate(EmailRegex.IsMatch)
+            .ValidationErrorMessage("[red]Input must match email format[/]"));
 
     public string ReadPhoneNumber(string prompt)
         => AnsiConsole.Prompt(new TextPrompt<string>(prompt)
-            .Validate(PhoneNumberRegex.IsMatch));
+            .Validate(PhoneNumberRegex.IsMatch)
+            .ValidationErrorMessage("[red]Input must match phone number format[/]"));
 
     public static Table TitleBox(string menuName)
         => new Table()
